@@ -1,3 +1,11 @@
+terraform {
+  backend "s3" {
+    bucket = "personal-projects-terraform-state"
+    key    = "goServer"
+    region = "us-east-1"
+  }
+}
+
 provider "google" {
   credentials = "${file("cred.json")}"
   project     = "${var.projectName}"
