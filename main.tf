@@ -88,6 +88,39 @@ output "url" {
   value = "${aws_api_gateway_deployment.goServer_v1.invoke_url}${aws_api_gateway_resource.goServer.path}"
 }
 
+data "aws_acm_certificate" "goServer" {
+  domain   = "${var.domain}"
+  statuses = ["ISSUED"]
+}
+
+resource "aws_api_gateway_domain_name" "goServer" {
+  domain_name = "${var.subDomain}.${var.domain}"
+  certificate_arn = "${data.aws_acm_certificate.goServer.arn}"
+}
+
+resource "aws_route53_zone" "main" {
+  name = "${var.domain}"
+}
+
+
+resource "aws_route53_record" "goServer" {
+  zone_id = "${aws_route53_zone.main.id}" 
+
+  name = "${aws_api_gateway_domain_name.goServer.domain_name}"
+  type = "A"
+
+  alias {
+    name                   = "${aws_api_gateway_domain_name.goServer.cloudfront_domain_name}"
+    zone_id                = "${aws_api_gateway_domain_name.goServer.cloudfront_zone_id}"
+    evaluate_target_health = true
+  }
+}
+
+resource "aws_api_gateway_base_path_mapping" "goServer" {
+  api_id      = "${aws_api_gateway_rest_api.goServer.id}"
+  stage_name  = "${aws_api_gateway_deployment.goServer_v1.stage_name}"
+  domain_name = "${aws_api_gateway_domain_name.goServer.domain_name}"
+}
 
 
 

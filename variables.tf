@@ -4,7 +4,7 @@ variable "region" {
 }
 variable "awsRegion" {
   type = "string"
-  default = "eu-west-2"
+  default = "us-east-1"
 }
 variable "projectName" {
   type = "string"
@@ -18,4 +18,14 @@ variable "computeName" {
 variable "bucketName" {
   type = "string"
   default = "goServer"
+}
+
+variable "domain" {
+  type = "string"
+  default = "alex-test-site.co.uk"
+}
+
+variable "subDomain" {
+  type = "string"
+  default = "goserver"
 }
