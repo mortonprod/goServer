@@ -26,6 +26,7 @@ Terraform far too complicated a setup
 Serverless setup failed.
 Must be in eu-east-1 for ACM to work so how do I move between regions. Had an old example I think...
 Need to create domain and SSL certificate.
+Need to create s3 bucket to store state.
 
 # To do 
 
